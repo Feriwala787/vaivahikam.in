@@ -7,14 +7,7 @@ import '../models/scout.dart';
 class SupabaseService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  // Auth
-  Future<void> signInWithOtp(String phone) async {
-    await _client.auth.signInWithOtp(phone: phone);
-  }
-
-  Future<AuthResponse> verifyOtp(String phone, String token) async {
-    return await _client.auth.verifyOTP(phone: phone, token: token, type: OtpType.sms);
-  }
+  // Auth is handled directly via Supabase.instance.client in login screen
 
   // Scout
   Future<Scout?> getScout(String id) async {
