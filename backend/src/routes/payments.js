@@ -5,10 +5,13 @@ const crypto = require('crypto');
 const supabase = require('../services/supabase');
 const auth = require('../middleware/auth');
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+let razorpay = null;
+if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID !== 'your_razorpay_key_id') {
+  razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+}
 
 const CREDIT_PACKS = {
   pack_10: { credits: 10, amount: 99900 },   // ₹999 in paise
@@ -18,6 +21,7 @@ const CREDIT_PACKS = {
 
 // Create order
 router.post('/create-order', auth, async (req, res) => {
+  if (!razorpay) return res.status(503).json({ error: 'Payments coming soon' });
   const { pack_id } = req.body;
   const pack = CREDIT_PACKS[pack_id];
 
@@ -39,6 +43,7 @@ router.post('/create-order', auth, async (req, res) => {
 
 // Verify payment & credit wallet
 router.post('/verify', auth, async (req, res) => {
+  if (!razorpay) return res.status(503).json({ error: 'Payments coming soon' });
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature, pack_id } = req.body;
 
   // Verify signature

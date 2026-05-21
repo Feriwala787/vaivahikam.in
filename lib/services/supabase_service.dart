@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:typed_data';
 import '../models/profile.dart';
 import '../models/match_filter.dart';
 import '../models/scout.dart';
@@ -7,8 +8,8 @@ class SupabaseService {
   final SupabaseClient _client = Supabase.instance.client;
 
   // Auth
-  Future<AuthResponse> signInWithOtp(String phone) async {
-    return await _client.auth.signInWithOtp(phone: phone);
+  Future<void> signInWithOtp(String phone) async {
+    await _client.auth.signInWithOtp(phone: phone);
   }
 
   Future<AuthResponse> verifyOtp(String phone, String token) async {
@@ -78,7 +79,7 @@ class SupabaseService {
   }
 
   // Image upload
-  Future<String> uploadImage(String path, List<int> bytes) async {
+  Future<String> uploadImage(String path, Uint8List bytes) async {
     await _client.storage.from('profile-photos').uploadBinary(path, bytes);
     return _client.storage.from('profile-photos').getPublicUrl(path);
   }

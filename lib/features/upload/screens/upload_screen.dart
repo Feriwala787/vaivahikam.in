@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../models/profile.dart';
 import '../../../providers/app_providers.dart';
+import '../../../services/image_service.dart';
 
 class UploadScreen extends ConsumerStatefulWidget {
   const UploadScreen({super.key});
@@ -156,7 +157,13 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
       final scout = ref.read(currentScoutProvider);
       final service = ref.read(supabaseServiceProvider);
 
-      // TODO: Upload photos with compression, get URLs
+      // Upload photos with compression
+      final imageService = ImageService();
+      List<String> photoUrls = [];
+      if (_photos.isNotEmpty) {
+        photoUrls = await imageService.uploadMultiple(scout?.id ?? 'unknown', _photos);
+      }
+
       final profile = Profile(
         id: '',
         scoutId: scout?.id ?? '',
@@ -175,7 +182,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
         familyType: _familyType,
         city: _cityController.text.trim(),
         state: _state,
-        photosUrl: [],
+        photosUrl: photoUrls,
         createdAt: DateTime.now(),
       );
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/profile.dart';
 import '../../../providers/app_providers.dart';
-
 class ProfileDetailScreen extends ConsumerStatefulWidget {
   final String profileId;
   const ProfileDetailScreen({super.key, required this.profileId});
@@ -109,8 +108,19 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   }
 
   Future<void> _unlockProfile() async {
-    // TODO: Integrate with backend credit deduction
-    setState(() => _unlocked = true);
+    setState(() => _loading = true);
+    try {
+      final backend = ref.read(backendServiceProvider);
+      final result = await backend.unlockProfile(widget.profileId);
+      if (result['error'] != null) {
+        if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['error'])));
+      } else {
+        setState(() => _unlocked = true);
+      }
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+    setState(() => _loading = false);
   }
 }
 

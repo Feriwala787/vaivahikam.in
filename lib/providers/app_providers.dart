@@ -3,8 +3,12 @@ import '../models/match_filter.dart';
 import '../models/profile.dart';
 import '../models/scout.dart';
 import '../services/supabase_service.dart';
+import '../services/backend_service.dart';
+import '../services/image_service.dart';
 
 final supabaseServiceProvider = Provider((_) => SupabaseService());
+final backendServiceProvider = Provider((_) => BackendService());
+final imageServiceProvider = Provider((_) => ImageService());
 
 // Current scout
 final currentScoutProvider = StateProvider<Scout?>((ref) => null);
