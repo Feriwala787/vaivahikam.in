@@ -7,6 +7,7 @@ import '../../features/search/screens/search_screen.dart';
 import '../../features/upload/screens/upload_screen.dart';
 import '../../features/profile_detail/screens/profile_detail_screen.dart';
 import '../../features/wallet/screens/wallet_screen.dart';
+import '../../features/crm/screens/crm_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/login',
@@ -30,5 +31,6 @@ final router = GoRouter(
       builder: (_, state) => ProfileDetailScreen(profileId: state.pathParameters['id']!),
     ),
     GoRoute(path: '/wallet', builder: (_, __) => const WalletScreen()),
+    GoRoute(path: '/shortlists', builder: (_, __) => const CrmScreen()),
   ],
 );
