@@ -1,5 +1,6 @@
 class AppConfig {
-  static const String supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
-  static const String backendUrl = 'YOUR_BACKEND_URL';
+  static const String supabaseUrl = 'https://vjpyfooeqwovcxpvnhyf.supabase.co';
+  // Paste your anon key below
+  static const String supabaseAnonKey = 'YOUR_ANON_KEY_HERE';
+  static const String backendUrl = 'http://localhost:3000';
 }
